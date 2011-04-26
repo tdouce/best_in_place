@@ -1,6 +1,7 @@
 module BestInPlace
   module BestInPlaceHelpers
     def best_in_place(object, field, opts = {})
+      opts[:tag] ||= "span"
       opts[:type] ||= :input
       opts[:collection] ||= []
       field = field.to_s
@@ -19,7 +20,7 @@ module BestInPlace
         value = fieldValue ? opts[:collection][1] : opts[:collection][0]
         collection = opts[:collection].to_json
       end
-      out = "<span class='best_in_place'"
+      out = "<#{opts[:tag]} class='best_in_place'"
       out << " id='best_in_place_#{object.class.to_s.gsub("::", "_").underscore}_#{object.id}_#{field}'"
       out << " data-url='#{opts[:path].blank? ? url_for(object).to_s : url_for(opts[:path])}'"
       out << " data-object='#{object.class.to_s.gsub("::", "_").underscore}'"
@@ -35,7 +36,7 @@ module BestInPlace
       else
         out << ">#{sanitize(value.to_s, :tags => nil, :attributes => nil)}"
       end
-      out << "</span>"
+      out << "</#{opts[:tag]}>"
       raw out
     end
   end
